@@ -1,0 +1,19 @@
+schema blog {
+        document blogs {
+                field title type string {
+                        indexing: summary | index
+                }
+                field body type string {
+                        indexing: summary | index | index
+                }
+                  field like_count type int {
+                          indexing: attribute
+                  }
+        }
+
+        rank-profile default inherits default {
+                first-phase {
+                        expression: like_count
+                }
+        }
+}
