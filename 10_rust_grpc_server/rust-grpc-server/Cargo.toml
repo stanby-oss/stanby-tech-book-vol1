@@ -1,0 +1,20 @@
+[package]
+name = "rust-grpc-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+opentelemetry = "0.27.1"
+opentelemetry-datadog = { version = "0.15.0", features = ["reqwest-client"] }
+opentelemetry_sdk = { version = "0.27.1", features = ["rt-tokio"] }
+prost = "0.13.4"
+tokio = { version = "1.42.0", features = ["full"] }
+tonic = "0.12.3"
+tonic-health = "0.12.3"
+tonic-middleware = "0.2.3"
+tonic-reflection = "0.12.3"
+tonic-tracing-opentelemetry = "0.28.0"
+tower = "0.5.2"
+tracing = "0.1.41"
+tracing-opentelemetry = "0.28.0"
+tracing-subscriber = { version = "0.3.19", features = ["json"] }

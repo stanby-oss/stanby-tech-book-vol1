@@ -1,0 +1,43 @@
+version: "3"
+
+tasks:
+  grpc:
+    desc: tools/ を実行して proto ファイルから gRPC サーバーのコードを生成します
+    cmds:
+      - cd tools/grpc_codegen && cargo run
+  ps:
+    desc: 起動中のプロセスを表示します
+    cmds:
+      - ps aux | grep -e "rust-grpc-server" -e "cargo"
+  start:
+    desc: |
+      gRPC サーバーを起動します。
+      バックグラウンドでcargo watchを起動しているので、ファイルの変更を検知して自動で再ビルドします。
+    cmds:
+      - bash -c "cargo watch -x 'run --bin rust-grpc-server' > ./.tmp/rust-grpc-server.log 2>&1 & echo \$! > ./.tmp/rust-grpc-server.pid"
+  stop:
+    desc: gRPC サーバーを停止します
+    cmds:
+      - kill $(cat ./.tmp/rust-grpc-server.pid)
+      - rm ./.tmp/rust-grpc-server.pid
+      - rm ./.tmp/rust-grpc-server.log
+  up:
+    desc: gRPC サーバーを起動します
+    cmds:
+      - task start
+      - task ps
+  down:
+    desc: gRPC サーバーを停止します
+    cmds:
+      - task stop
+      - task ps
+  lintfix:
+    desc: コードを静的解析しルールに準拠していることをチェックします。準拠していない場合は修正します。
+    cmds:
+      - cargo fmt --all
+      - cargo clippy --all-targets --all-features -- -D warnings -D clippy::unwrap_used
+  lint:
+    desc: コードを静的解析しルールに準拠していることをチェックします。
+    cmds:
+      - cargo fmt --all --check
+      - cargo clippy --all-targets --all-features -- -D warnings -D clippy::unwrap_used
