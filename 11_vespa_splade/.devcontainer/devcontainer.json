@@ -1,0 +1,57 @@
+{
+    "name": "vespa-splade",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "workspace",
+    "workspaceFolder": "/workspace",
+    "features": {      
+      "ghcr.io/va-h/devcontainers-features/uv:1": {}
+    },
+    "remoteEnv": {
+      "PATH": "${containerEnv:PATH}:/workspace/.bin"
+    },
+    "remoteUser": "vscode",
+    "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "editor.renderWhitespace": "all",
+          "python.defaultInterpreterPath": ".venv/bin/python",
+          "python.testing.pytestArgs": ["tests", "--capture=tee-sys", "-vv"],
+          "python.testing.pytestEnabled": true,
+          "[python]": {
+            "editor.defaultFormatter": "charliermarsh.ruff",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+              "source.fixAll": true,
+              "source.organizeImports": true
+            }
+          },
+          "coverage-gutters.showLineCoverage": true,
+          "coverage-gutters.showRulerCoverage": true,
+          "coverage-gutters.coverageFileNames": [".pytest_cache/coverage.xml"],
+          "[json][jsonc]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.formatOnSave": true,
+            "editor.codeActionOnSave": {
+              "source.fixAll": true
+            }
+          }
+        },
+        "extensions": [
+            "esbenp.prettier-vscode",
+            "ms-python.python",
+            "njpwerner.autodocstring",
+            "KevinRose.vsc-python-indent",
+            "charliermarsh.ruff",
+            "ryanluker.vscode-coverage-gutters",
+            "be5invis.toml",
+            "letrieu.expand-region",
+            "kahole.magit",
+            "ms-azuretools.vscode-docker",
+            "vscjava.vscode-java-pack",
+            "redhat.vscode-xml",
+            "vespaai.vespa-language-support"
+        ]
+      }
+    }
+  }

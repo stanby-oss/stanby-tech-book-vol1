@@ -1,0 +1,4 @@
+# VESPA_ENDPOINT の設定例: http://vespa:8080
+VESPA_ENDPOINT: "http://localhost:8089"
+SCALE: 1000
+FEED_BATCH_SIZE: 500

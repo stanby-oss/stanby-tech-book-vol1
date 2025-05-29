@@ -1,0 +1,30 @@
+[project]
+name = "vespa_search_compare"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "datasets>=3.5.0",
+    "fugashi[unidic-lite]>=1.4.0",
+    "pandas>=2.2.3",
+    "protobuf>=6.30.2",
+    "pyarrow>=19.0.1",
+    "pyvespa>=0.55.0",
+    "ranx>=0.3.20",
+    "tqdm>=4.67.1",
+    "yasem>=0.4.1",
+]
+
+[dependency-groups]
+dev = [
+    "poethepoet>=0.33.1",
+    "ruff>=0.11.6",
+]
+
+[tool.poe.tasks]
+fmt = "ruff format ."
+lint = "ruff check . --fix"
+feed = "python main.py feed"
+search = "python main.py search"
+eval = "python main.py eval"

@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties">
+
+    <container id='default' version='1.0'>
+        <!-- LuceneLinguistics コンポーネント -->
+        <component id="linguistics"
+            class="com.yahoo.language.lucene.LuceneLinguistics"
+            bundle="japanese-analyzer-bundle">
+            <config name="com.yahoo.language.lucene.lucene-analysis">                
+                <!-- <configDir>lucene-linguistics</configDir> ユーザ辞書が必要な場合はここに配置 -->
+                <analysis>
+                    <!-- 'ja' キーで日本語 Analyzer を定義 -->
+                    <item key="ja">
+                        <charFilters>
+                            <item>
+                                <name>icuNormalizer2</name>
+                                <conf>
+                                    <item name="form">nfkc_cf</item>
+                                    <item name="mode">compose</item>
+                                </conf>
+                            </item>
+                        </charFilters>
+                        <tokenizer>
+                            <name>japanese</name>
+                        </tokenizer>
+                        <tokenFilters>
+                            <item>
+                                <name>japaneseBaseForm</name>
+                            </item>
+                            <item>
+                                <name>japanesePartOfSpeechStop</name>
+                            </item>
+                            <item>
+                                <name>japaneseKatakanaStem</name>
+                            </item>
+                            <item>
+                                <name>japaneseNumber</name>
+                            </item>
+                        </tokenFilters>
+                    </item>
+                </analysis>
+            </config>
+        </component>
+        <search>
+            <chain id="default" inherits="vespa">
+                <searcher id="com.example.TokenWeakAndSearcher"
+                    bundle="token-weakand-searcher">
+                    <after>com.yahoo.search.yql.MinimalQueryInserter</after>
+                    <before>com.yahoo.search.querytransform.WeakAndReplacementSearcher</before>
+                </searcher>
+            </chain>
+        </search>
+        <document-api></document-api>
+        <document-processing />
+        <nodes>
+            <node hostalias='node1'></node>
+        </nodes>
+    </container>
+
+    <content id='jacwir' version='1.0'>
+        <redundancy>1</redundancy>
+        <documents>
+            <document type='jacwir' mode="index" />
+        </documents>
+        <nodes>
+            <node hostalias="node1" distribution-key="0" />
+        </nodes>
+    </content>
+
+</services>

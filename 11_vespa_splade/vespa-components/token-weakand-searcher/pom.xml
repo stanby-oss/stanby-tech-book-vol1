@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>token-weakand-searcher</artifactId>
+    <version>1.0.0</version>
+    <packaging>container-plugin</packaging>
+
+    <properties>
+        <vespa.version>8.492.15</vespa.version>
+        <lucene.version>9.11.1</lucene.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <!-- Vespa のコンテナ依存関係 -->
+        <dependency>
+            <groupId>com.yahoo.vespa</groupId>
+            <artifactId>container</artifactId>
+            <version>${vespa.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Searcher のベース API -->
+        <dependency>
+            <groupId>com.yahoo.vespa</groupId>
+            <artifactId>container-search</artifactId>
+            <version>${vespa.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- LuceneLinguistics 用トークナイザ -->
+        <dependency>
+            <groupId>com.yahoo.vespa</groupId>
+            <artifactId>linguistics</artifactId>
+            <version>${vespa.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- QueryTree 操作用のアイテム -->
+        <dependency>
+            <groupId>com.yahoo.vespa</groupId>
+            <artifactId>searchcore</artifactId>
+            <version>${vespa.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Vespa のバンドルプラグイン -->
+            <plugin>
+                <groupId>com.yahoo.vespa</groupId>
+                <artifactId>bundle-plugin</artifactId>
+                <version>${vespa.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <failOnWarnings>true</failOnWarnings>
+                    <bundleSymbolicName>${project.artifactId}</bundleSymbolicName>
+                </configuration>
+            </plugin>
+
+            <!-- Vespa アプリケーションパッケージの作成 -->
+            <plugin>
+                <groupId>com.yahoo.vespa</groupId>
+                <artifactId>vespa-application-maven-plugin</artifactId>
+                <version>${vespa.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>packageApplication</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Java コンパイラの設定 -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
